@@ -5,11 +5,13 @@ class Api::V1::ArticlesController < ApplicationController
   # GET /articles.json
   def index
     @articles = Article.all
+    render json: @articles
   end
 
   # GET /articles/1
   # GET /articles/1.json
   def show
+    render json: @articles
   end
 
   # GET /articles/new
@@ -24,17 +26,12 @@ class Api::V1::ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    @article = Article.new(article_params)
-
-    respond_to do |format|
-      if @article.save
-        format.html { redirect_to @article, notice: 'Article was successfully created.' }
-        format.json { render :show, status: :created, location: api_v1_article_url(@article) }
-      else
-        format.html { render :new }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
-      end
-    end
+   @article = Article.new(article_params)
+   if @article.save
+    render json: @article, status: :created, location: api_v1_article_url(@article)
+   else
+    render json: @article.errors, status: :unprocessable_entity
+   end
   end
 
   # PATCH/PUT /articles/1
